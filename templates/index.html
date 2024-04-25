@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Upload</title>
+    <style>
+        /* Add your CSS styles here */
+    </style>
+</head>
+<body>
+    <h1>Upload PDF</h1>
+    <form id="pdfForm" enctype="multipart/form-data">
+        <input type="file" name="pdfFile" id="pdfFile">
+        <button type="submit">Upload</button>
+    </form>
+    <div id="result"></div>
+    <script>
+        document.getElementById('pdfForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var formData = new FormData();
+            var fileInput = document.getElementById('pdfFile');
+            formData.append('file', fileInput.files[0]);
+
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                // Construct HTML to display all key-value pairs
+                var resultDiv = document.getElementById('result');
+                var htmlContent = '<h2>Response JSON</h2>';
+                htmlContent += '<ul>';
+                for (var key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        htmlContent += '<li><strong>' + key + ':</strong> ' + data[key] + '</li>';
+                    }
+                }
+                htmlContent += '</ul>';
+                resultDiv.innerHTML = htmlContent;
+            })});
+    </script>
+</body>
+</html>
