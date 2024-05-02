@@ -28,8 +28,9 @@
                 method: 'POST',
                 body: formData
             })
-            .then(response => console.log(response))
+            .then(response => response.json())
             .then(data => {
+                console.log("Starting data received")
                 console.log(data)
                 // Construct HTML to display all key-value pairs
                 var resultDiv = document.getElementById('result');
