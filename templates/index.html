@@ -20,13 +20,15 @@
             event.preventDefault();
             var formData = new FormData();
             var fileInput = document.getElementById('pdfFile');
+            console.log("Setting up file")
             formData.append('file', fileInput.files[0]);
+            console.log("Starting upload")
 
             fetch('/upload', {
                 method: 'POST',
                 body: formData
             })
-            .then(response => response.json())
+            .then(response => console.log(response))
             .then(data => {
                 console.log(data)
                 // Construct HTML to display all key-value pairs
