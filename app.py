@@ -26,6 +26,7 @@ def index():
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
+    print('Running Upload')
     if 'file' not in request.files:
         return jsonify(success=False, message="No file part"), 400
     file = request.files['file']
@@ -43,6 +44,7 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() == 'pdf'
 
 def upload_blob(file, filename):
+    print("Upload Blob Running")
     blob_service_client = BlobServiceClient.from_connection_string(AZURE_STORAGE_CONNECTION_STRING)
     blob_client = blob_service_client.get_blob_client(AZURE_STORAGE_CONTAINER_NAME, filename)
     blob_client.upload_blob(file.read(), overwrite=True)
