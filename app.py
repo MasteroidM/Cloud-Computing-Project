@@ -36,7 +36,9 @@ def upload_file():
         filename = file.filename
         upload_blob(file, filename)
         print(filename)
-        return analyze_document(filename) # Directly return the analysis results
+        temp = analyze_document(filename) # Directly return the analysis results
+        # delete_blob(filename)
+        return temp
     else:
         return jsonify(success=False, message="Invalid file type"), 400
     
@@ -48,6 +50,12 @@ def upload_blob(file, filename):
     blob_service_client = BlobServiceClient.from_connection_string(AZURE_STORAGE_CONNECTION_STRING)
     blob_client = blob_service_client.get_blob_client(AZURE_STORAGE_CONTAINER_NAME, filename)
     blob_client.upload_blob(file.read(), overwrite=True)
+
+def delete_blob(filename):
+    print("Delete Blob Running")
+    blob_service_client = BlobServiceClient.from_connection_string(AZURE_STORAGE_CONNECTION_STRING)
+    blob_client = blob_service_client.get_blob_client(AZURE_STORAGE_CONTAINER_NAME, filename)
+    blob_client.delete_blob()
 
 def analyze_document(filename):
     document_intelligence_client = DocumentIntelligenceClient(endpoint=DOCUMENT_INTELLIGENCE_ENDPOINT, credential=AzureKeyCredential(DOCUMENT_INTELLIGENCE_API_KEY))
